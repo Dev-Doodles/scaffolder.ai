@@ -1,0 +1,6 @@
+github:
+  accessToken: <GITHUB_PAT>
+  organisation: Dev-Doodles
+chatGPT:
+  model: gpt-5.1
+  apiKey: <CHATGPT_API_KEY>

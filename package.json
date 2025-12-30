@@ -1,0 +1,66 @@
+{
+  "name": "scaffolder.ai",
+  "description": "An ai agent to scaffold new projects.",
+  "scripts": {
+    "build": "pnpm clean && nest build",
+    "clean": "rimraf dist && rimraf test-reports && rimraf coverage && rimraf tsconfig.build.tsbuildinfo",
+    "eslint": "scripts/run-task.cjs eslint",
+    "package": "scripts/run-task.cjs package",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "pre-compile": "scripts/run-task.cjs pre-compile",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest"
+  },
+  "author": {
+    "name": "Ram Rallapalli",
+    "email": "ram@devdoodles.space",
+    "organization": false
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.14",
+    "@nestjs/schematics": "^11.0.9",
+    "@nestjs/testing": "^11.1.9",
+    "@types/convict": "^6.1.6",
+    "@types/node": "^24.9.1",
+    "@typescript-eslint/eslint-plugin": "^8",
+    "@typescript-eslint/parser": "^8",
+    "@vitest/coverage-v8": "^4.0.16",
+    "eslint": "^9",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "rimraf": "^6.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.9",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.9",
+    "@nestjs/platform-express": "^11.1.9",
+    "@nestjs/platform-ws": "^11.1.9",
+    "@nestjs/websockets": "^11.1.9",
+    "@openai/agents": "^0.2.1",
+    "convict": "^6.2.4",
+    "expect-type": "^1.2.2",
+    "isomorphic-git": "^1.35.0",
+    "js-yaml": "^4.1.1",
+    "octokit": "^5.0.5",
+    "projen": "^0.98.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "yaml": "^2.8.1",
+    "zod": "3"
+  },
+  "pnpm": {},
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.0.0",
+  "type": "module"
+}
