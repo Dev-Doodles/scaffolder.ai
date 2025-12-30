@@ -3,6 +3,7 @@ import { IGitHubConfig } from './github.config.js';
 import { IAgentConfig } from '../interfaces/index.js';
 import { getPath } from '../utils/index.js';
 import { load } from 'js-yaml';
+import { existsSync } from 'fs';
 
 export interface ConfigSchema {
   github: IGitHubConfig;
@@ -46,14 +47,18 @@ export const initConfig = (): Config<ConfigSchema> => {
       },
     },
   });
-
+  const isLocal = existsSync(getPath('../../configuration/local.yaml'));
   config.validate({ allowed: 'strict' });
-  config.loadFile([
-    getPath('../../configuration/default.yaml'),
-    getPath(
-      `../../configuration/${process.env.ENVIRONMENT || 'development'}.yaml`,
-    ),
-  ]);
+  config.loadFile(
+    isLocal
+      ? [getPath('../../configuration/local.yaml')]
+      : [
+          getPath('../../configuration/default.yaml'),
+          getPath(
+            `../../configuration/${process.env.ENVIRONMENT || 'development'}.yaml`,
+          ),
+        ],
+  );
 
   return config;
 };

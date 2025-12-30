@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { ProjenTool } from './projen.js';
+import { OpenAIProjenTool } from './projen.js';
 import { ToolError } from '../../errors/index.js';
 import { ProjectTypeEnum } from '../schema.js';
 import * as fs from 'fs';
@@ -30,11 +30,11 @@ vi.mock('@openai/agents', () => ({
   })),
 }));
 
-describe('ProjenTool', () => {
-  let projenTool: ProjenTool;
+describe('OpenAIProjenTool', () => {
+  let projenTool: OpenAIProjenTool;
 
   beforeEach(() => {
-    projenTool = new ProjenTool();
+    projenTool = new OpenAIProjenTool();
     vi.clearAllMocks();
   });
 
