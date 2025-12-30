@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
-import { GithubTool } from './github.js';
+import { OpenAIGithubTool } from './github.js';
 import { GitHubClient } from '../../utils/index.js';
 import { ToolError } from '../../errors/index.js';
 
@@ -14,7 +14,7 @@ vi.mock('@openai/agents', () => ({
 }));
 
 describe('GithubTool', () => {
-  let githubTool: GithubTool;
+  let githubTool: OpenAIGithubTool;
   let mockClient: {
     createRepository: Mock;
     addremote: Mock;
@@ -29,7 +29,7 @@ describe('GithubTool', () => {
       commitAndPush: vi.fn(),
       deleteRepository: vi.fn(),
     };
-    githubTool = new GithubTool(mockClient as unknown as GitHubClient);
+    githubTool = new OpenAIGithubTool(mockClient as unknown as GitHubClient);
   });
 
   describe('createRepository', () => {

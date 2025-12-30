@@ -3,7 +3,7 @@ import { AgentService, AgentResponseSchema } from '../interfaces/index.js';
 import z from 'zod';
 import { Injectable } from '@nestjs/common';
 import { DEFAULT_SCAFFOLDER_PROMPT } from '../utils/index.js';
-import { GithubTool, ProjenTool } from '../tools/open-ai/index.js';
+import { OpenAIGithubTool, OpenAIProjenTool } from '../tools/open-ai/index.js';
 import { ScaffolderConfig } from '../config/scaffolder.config.js';
 import { Logger } from '@nestjs/common';
 
@@ -31,8 +31,8 @@ export class ScaffolderService extends AgentService<
   }
 
   constructor(
-    private readonly githubTool: GithubTool,
-    private readonly projenTool: ProjenTool,
+    private readonly githubTool: OpenAIGithubTool,
+    private readonly projenTool: OpenAIProjenTool,
     readonly config: ScaffolderConfig,
   ) {
     super();

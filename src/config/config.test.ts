@@ -27,6 +27,10 @@ vi.mock('../utils/index.js', () => ({
   ),
 }));
 
+vi.mock('fs', () => ({
+  existsSync: vi.fn(),
+}));
+
 describe('config', () => {
   let mockConvict: ReturnType<typeof vi.fn>;
   let mockConfigInstance: {
@@ -168,6 +172,74 @@ describe('config', () => {
       expect(getPath).toHaveBeenCalledWith(
         expect.stringContaining('../../configuration/'),
       );
+    });
+
+    it('should load only local.yaml when it exists', async () => {
+      const { existsSync } = await import('fs');
+      const { getPath } = await import('../utils/index.js');
+      const { initConfig } = await import('./config.js');
+
+      vi.mocked(existsSync).mockReturnValue(true);
+
+      initConfig();
+
+      expect(existsSync).toHaveBeenCalledWith(
+        expect.stringContaining('local.yaml'),
+      );
+      expect(mockConfigInstance.loadFile).toHaveBeenCalledWith([
+        expect.stringContaining('local.yaml'),
+      ]);
+      expect(getPath).toHaveBeenCalledWith('../../configuration/local.yaml');
+    });
+
+    it('should load default and environment config when local.yaml does not exist', async () => {
+      const originalEnv = process.env.ENVIRONMENT;
+      process.env.ENVIRONMENT = 'development';
+
+      const { existsSync } = await import('fs');
+      const { getPath } = await import('../utils/index.js');
+      const { initConfig } = await import('./config.js');
+
+      vi.mocked(existsSync).mockReturnValue(false);
+
+      initConfig();
+
+      expect(existsSync).toHaveBeenCalledWith(
+        expect.stringContaining('local.yaml'),
+      );
+      expect(mockConfigInstance.loadFile).toHaveBeenCalledWith([
+        expect.stringContaining('default.yaml'),
+        expect.stringContaining('development.yaml'),
+      ]);
+      expect(getPath).toHaveBeenCalledWith('../../configuration/default.yaml');
+
+      process.env.ENVIRONMENT = originalEnv;
+    });
+
+    it('should check for local.yaml existence before loading files', async () => {
+      const { existsSync } = await import('fs');
+      const { getPath } = await import('../utils/index.js');
+      const { initConfig } = await import('./config.js');
+
+      vi.mocked(existsSync).mockReturnValue(false);
+
+      initConfig();
+
+      expect(existsSync).toHaveBeenCalledBefore(mockConfigInstance.loadFile);
+      expect(getPath).toHaveBeenCalledWith('../../configuration/local.yaml');
+    });
+
+    it('should validate config before loading files', async () => {
+      const { initConfig } = await import('./config.js');
+
+      initConfig();
+
+      const validateCallOrder =
+        mockConfigInstance.validate.mock.invocationCallOrder[0];
+      const loadFileCallOrder =
+        mockConfigInstance.loadFile.mock.invocationCallOrder[0];
+
+      expect(validateCallOrder).toBeLessThan(loadFileCallOrder);
     });
   });
 
